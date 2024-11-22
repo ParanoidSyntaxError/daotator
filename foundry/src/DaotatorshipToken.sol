@@ -1,23 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {ERC20Votes} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import {Nonces} from "@openzeppelin/contracts/utils/Nonces.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-import {IDaotatorshipToken} from "./IDaotatorshipToken.sol";
+contract DaotatorshipToken is ERC4626, ERC20Permit, ERC20Votes {
+    uint256 public immutable MAX_SUPPLY;
 
-contract DaotatorshipToken is ERC20, Ownable, ERC20Permit, ERC20Votes, IDaotatorshipToken {
     constructor(
         string memory name,
         string memory symbol,
-        address initialOwner
-    ) ERC20(name, symbol) Ownable(initialOwner) ERC20Permit(name) {}
+        uint256 maxSupply
+    )
+        ERC4626(IERC20(0x4200000000000000000000000000000000000006))
+        ERC20(name, symbol)
+        ERC20Permit(name)
+    {
+        MAX_SUPPLY = maxSupply;
+    }
 
-    function mint(address to, uint256 amount) external override onlyOwner {
-        _mint(to, amount);
+    function decimals() public view override(ERC4626, ERC20) returns (uint8) {
+        return ERC4626.decimals();
     }
 
     function clock() public view override returns (uint48) {
@@ -40,5 +46,9 @@ contract DaotatorshipToken is ERC20, Ownable, ERC20Permit, ERC20Votes, IDaotator
         address owner
     ) public view override(ERC20Permit, Nonces) returns (uint256) {
         return super.nonces(owner);
+    }
+
+    function _decimalsOffset() internal pure override returns (uint8) {
+        return 3;
     }
 }

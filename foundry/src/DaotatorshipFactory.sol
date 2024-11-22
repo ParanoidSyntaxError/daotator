@@ -24,6 +24,7 @@ contract DaotatorshipFactory is IDaotatorshipFactory {
         uint256 salePrice,
         uint256 saleDeadline
     ) external override {
+        /*
         address[] memory emptyAddressArray = new address[](0);
         address[] memory zeroAddressArray = new address[](1);
         zeroAddressArray[0] = address(0);
@@ -63,5 +64,6 @@ contract DaotatorshipFactory is IDaotatorshipFactory {
             timelockController.DEFAULT_ADMIN_ROLE(),
             address(this)
         );
+        */
     }
 }
