@@ -2,11 +2,9 @@ import { textGlow } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-interface RemilioBannerProps extends React.HTMLAttributes<HTMLElement> { }
-
 export default function RemilioBanner({
 	...props
-}: RemilioBannerProps) {
+}: React.HTMLAttributes<HTMLElement>) {
 	return (
 		<div
 			{...props}

@@ -16,8 +16,6 @@ import { AsciiButton } from "./ascii-button";
 import AsciiInput from "./ascii-input";
 import AsciiTextArea from "./ascii-text-area";
 
-interface CreateFormProps extends React.HTMLAttributes<HTMLElement> { }
-
 const schema = z.object({
     name: z.string().min(1).max(64),
     description: z.string(),
@@ -28,7 +26,7 @@ const schema = z.object({
 
 export default function CreateForm({
     ...props
-}: CreateFormProps) {
+}: React.HTMLAttributes<HTMLElement>) {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
