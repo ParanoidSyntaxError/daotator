@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { textGlow } from "@/lib/utils";
+import TopBar from "@/components/top-bar";
+import { primaryColor } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "DAOtator",
 	description: "DAOtator",
+	icons: "/ascii-remilio-glow-icon.png"
 };
 
 export default function RootLayout({
@@ -15,9 +17,16 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`bg-[#0A0A0A] font-mono antialiased`}
+				className={`bg-[#0A0A0A] text-[${primaryColor}] font-mono antialiased`}
 			>
-				{children}
+				<div>
+					<TopBar/>
+				</div>
+				<main
+					className="px-8 pb-8"
+				>
+					{children}
+				</main>
 			</body>
 		</html>
 	);

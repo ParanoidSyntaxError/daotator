@@ -1,16 +1,11 @@
-import { cn, textGlow } from "@/lib/utils";
+import RemilioBanner from "@/components/remilio-banner";
 
 export default function HomePage() {
 	return (
-		<div>	
-			<div
-				className={cn(
-					textGlow("#FFFFFF"),
-					"text-lg"
-				)}
-			>
-				DAOtator
-			</div>
+		<div>
+			<RemilioBanner
+				className="mt-24"
+			/>
 		</div>
 	);
 }
