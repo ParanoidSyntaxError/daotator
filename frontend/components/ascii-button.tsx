@@ -1,24 +1,19 @@
 import React from 'react';
 import { cn, textGlow } from '@/lib/utils';
 
-interface AsciiButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-    colorHex?: string;
-}
-
 export function AsciiButton({
-    colorHex = "#1DD747",
     ...props
-}: AsciiButtonProps) {
+}: React.HTMLAttributes<HTMLButtonElement>) {
     return (
         <button
             {...props}
             className={cn(
                 "hover:text-[#0A0A0A] transition-colors leading-4",
-                `hover:bg-[${colorHex}]`,
+                `hover:bg-[#00FF77]`,
                 props.className
             )}
             style={{
-                ...textGlow(colorHex),
+                ...textGlow(),
                 ...props.style
             }}
         >

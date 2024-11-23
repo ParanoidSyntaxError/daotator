@@ -20,11 +20,11 @@ export default function RemilioBanner({
 						height={512}
 						className="select-none pointer-events-none"
 						style={{
-							filter: "sepia(100%) saturate(1000%) brightness(70%) hue-rotate(60deg)",
+							filter: "sepia(100%) saturate(1000%) brightness(100%) hue-rotate(65deg)",
 						}}
 					/>
 					<div
-						className="text-xs text-center -mt-4 mr-10 opacity-25"
+						className="text-xs text-center -mt-4 mr-10 opacity-50"
 						style={{
 							...textGlow(),
 						}}

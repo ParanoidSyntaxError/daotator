@@ -16,7 +16,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`bg-[#0A0A0A] text-[#1DD747] font-mono antialiased`}
+				className={`bg-[#0A0A0A] text-[#00FF77] font-mono antialiased`}
 			>
 				<div>
 					<TopBar/>

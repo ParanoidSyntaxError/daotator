@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function textGlow(hex: string = "#1DD747") {
+export function textGlow(hex: string = "#00FF77") {
 	return {
-		textShadow: `0 0 5px ${hex}, 0 0 10px ${hex}`
+		textShadow: `0 0 2px ${hex}, 0 0 10px ${hex}`
 	};
 }
