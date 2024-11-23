@@ -1,12 +1,12 @@
 import React from 'react';
-import { cn, primaryColor, textGlow } from '@/lib/utils';
+import { cn, textGlow } from '@/lib/utils';
 
 interface AsciiButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     colorHex?: string;
 }
 
 export function AsciiButton({
-    colorHex = primaryColor,
+    colorHex = "#1DD747",
     ...props
 }: AsciiButtonProps) {
     return (

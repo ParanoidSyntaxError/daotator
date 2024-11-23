@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import TopBar from "@/components/top-bar";
-import { primaryColor } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "DAOtator",
@@ -17,7 +16,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`bg-[#0A0A0A] text-[${primaryColor}] font-mono antialiased`}
+				className={`bg-[#0A0A0A] text-[#1DD747] font-mono antialiased`}
 			>
 				<div>
 					<TopBar/>

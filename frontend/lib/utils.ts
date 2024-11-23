@@ -5,9 +5,7 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export const primaryColor = "#1DD747";
-
-export function textGlow(hex: string = primaryColor) {
+export function textGlow(hex: string = "#1DD747") {
 	return {
 		textShadow: `0 0 5px ${hex}, 0 0 10px ${hex}`
 	};
