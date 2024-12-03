@@ -1,6 +1,6 @@
 "use client";
 
-import { textGlow } from '@/lib/utils';
+import { cn, textGlow } from '@/lib/utils';
 import React, { useState, ChangeEvent } from 'react';
 
 interface AsciiInputProps extends React.HTMLAttributes<HTMLElement> {
@@ -43,7 +43,10 @@ export default function AsciiInput({
                     </div>
                     <input
                         type={type}
-                        className="w-full px-2 text-white bg-transparent outline-none"
+                        className={cn(
+                            "w-full px-2 text-white bg-transparent outline-none",
+                            "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        )}
                         value={value}
                         onChange={handleChange}
                     />

@@ -4,7 +4,7 @@ export default function HomePage() {
 	return (
 		<div>
 			<RemilioBanner
-				className="mt-24"
+				className="md:mt-24 mt-4"
 			/>
 		</div>
 	);

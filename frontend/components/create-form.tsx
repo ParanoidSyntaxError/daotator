@@ -197,6 +197,7 @@ export default function CreateForm({
                                 >
                                     <div>
                                         <AsciiInput
+                                            type="number"
                                             defaultValue={field.value}
                                             onChange={field.onChange}
                                         />

@@ -22,7 +22,7 @@ const items = [
 export default function HowItWorksPage() {
 	return (
 		<div
-			className="flex flex-col text-left w-fit mx-auto mt-24 gap-y-8"
+			className="flex flex-col text-left w-fit mx-auto md:mt-24 mt-8 gap-y-8"
 		>
 			<div
 				className="text-5xl font-bold"
