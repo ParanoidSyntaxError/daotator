@@ -15,7 +15,7 @@ contract DaotatorshipToken is ERC4626, ERC20Permit, ERC20Votes {
         string memory symbol,
         uint256 maxSupply
     )
-        ERC4626(IERC20(0x4200000000000000000000000000000000000006))
+        ERC4626(IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE))
         ERC20(name, symbol)
         ERC20Permit(name)
     {
