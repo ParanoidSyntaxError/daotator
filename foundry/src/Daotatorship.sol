@@ -1,134 +1,60 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
-import {Governor} from "@openzeppelin/contracts/governance/Governor.sol";
-import {GovernorCountingSimple} from "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
-import {GovernorTimelockControl} from "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
-import {GovernorVotes} from "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
-import {GovernorVotesQuorumFraction} from "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
-import {IVotes} from "@openzeppelin/contracts/governance/utils/IVotes.sol";
+import {ERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 
-contract Daotatorship is
-    Governor,
-    GovernorCountingSimple,
-    GovernorVotes,
-    GovernorVotesQuorumFraction,
-    GovernorTimelockControl
-{
-    address public immutable daotator;
+contract Daotatorship is ERC4626, ERC20Permit, TimelockController {
+    uint8 private immutable _offset;
+
+    uint256 private constant MAX_SUPPLY = 1_000_000_000;
 
     constructor(
-        address _daotator,
-        string memory _governorName,
-        IVotes _token,
-        TimelockController _timelock
+        address underlyingAsset,
+        uint8 offset,
+        string memory name,
+        string memory symbol,
+        address admin
     )
-        Governor(_governorName)
-        GovernorVotes(_token)
-        GovernorVotesQuorumFraction(4)
-        GovernorTimelockControl(_timelock)
+        ERC4626(IERC20(underlyingAsset))
+        ERC20(name, symbol)
+        ERC20Permit(name)
+        TimelockController(
+            24 hours,
+            new address[](0),
+            new address[](0),
+            address(this)
+        )
     {
-        daotator = _daotator;
+        _offset = offset;
+
+        _grantRole(PROPOSER_ROLE, admin);
+        _grantRole(CANCELLER_ROLE, admin);
+        _grantRole(EXECUTOR_ROLE, address(0));
+
+        _revokeRole(DEFAULT_ADMIN_ROLE, address(this));
     }
 
-    function propose(
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        string memory description
-    ) public override returns (uint256) {
-        if (msg.sender != daotator) {
-            revert();
-        }
-
-        return super.propose(targets, values, calldatas, description);
+    function decimals() public view override(ERC4626, ERC20) returns (uint8) {
+        return ERC4626.decimals();
     }
 
-    function votingDelay() public pure override returns (uint256) {
-        return 0 seconds;
+    function maxDeposit(address account) public view virtual override returns (uint256) {
+        return convertToAssets(maxMint(account));
     }
 
-    function votingPeriod() public pure override returns (uint256) {
-        return 1 weeks;
+    function maxMint(address) public view virtual override returns (uint256) {
+        return _maxSupply() - totalSupply();
     }
 
-    function quorum(
-        uint256 blockNumber
-    )
-        public
-        view
-        override(Governor, GovernorVotesQuorumFraction)
-        returns (uint256)
-    {
-        return super.quorum(blockNumber);
+    function _decimalsOffset() internal view override returns (uint8) {
+        return _offset;
     }
 
-    function state(
-        uint256 proposalId
-    )
-        public
-        view
-        override(Governor, GovernorTimelockControl)
-        returns (ProposalState)
-    {
-        return super.state(proposalId);
-    }
-
-    function proposalNeedsQueuing(
-        uint256 proposalId
-    ) public view override(Governor, GovernorTimelockControl) returns (bool) {
-        return super.proposalNeedsQueuing(proposalId);
-    }
-
-    function _queueOperations(
-        uint256 proposalId,
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockControl) returns (uint48) {
-        return
-            super._queueOperations(
-                proposalId,
-                targets,
-                values,
-                calldatas,
-                descriptionHash
-            );
-    }
-
-    function _executeOperations(
-        uint256 proposalId,
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockControl) {
-        super._executeOperations(
-            proposalId,
-            targets,
-            values,
-            calldatas,
-            descriptionHash
-        );
-    }
-
-    function _cancel(
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockControl) returns (uint256) {
-        return super._cancel(targets, values, calldatas, descriptionHash);
-    }
-
-    function _executor()
-        internal
-        view
-        override(Governor, GovernorTimelockControl)
-        returns (address)
-    {
-        return super._executor();
+    function _maxSupply() internal view returns (uint256) {
+        return MAX_SUPPLY * (10 ** decimals());
     }
 }
